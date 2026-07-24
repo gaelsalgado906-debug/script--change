@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GL Studios Hub</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    /* Custom Scrollbar and Glassmorphism */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.6);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(99, 102, 241, 0.5);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(99, 102, 241, 0.8);
+    }
+    
+    .glass-panel {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #a855f7, #6366f1, #3b82f6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex items-center justify-center p-4 font-sans antialiased overflow-x-hidden selection:bg-indigo-500 selection:text-white">
+
+  <div class="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
+    <div class="absolute -top-40 -left-40 w-96 h-96 bg-purple-600/30 rounded-full blur-3xl animate-pulse"></div>
+    <div class="absolute -bottom-40 -right-40 w-96 h-96 bg-indigo-600/30 rounded-full blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
+  </div>
+
+  <div class="glass-panel w-full max-w-2xl rounded-2xl shadow-2xl shadow-indigo-500/10 overflow-hidden transition-all duration-300 hover:shadow-indigo-500/20">
+    
+    <div class="p-6 border-b border-slate-800/80 flex flex-wrap justify-between items-center gap-4 bg-slate-900/40">
+      <div class="flex items-center gap-3">
+        <div class="w-11 h-11 rounded-xl overflow-hidden shadow-lg shadow-indigo-500/30 border border-slate-700/50 flex-shrink-0">
+          <img src="https://i.imgur.com/qwLIHuM.png" alt="GL Studios Logo" class="w-full h-full object-cover" />
+        </div>
+        <div>
+          <h1 class="text-xl font-bold tracking-wide gradient-text">GL Studios Hub</h1>
+          <p class="text-xs text-slate-400 flex items-center gap-1 mt-0.5">
+            <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400"></i>
+            Official Script by <span class="font-semibold text-slate-200">GL Studios</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+        Active / Safe
+      </div>
+    </div>
+
+    <div class="px-6 pt-4 flex gap-2 border-b border-slate-800/80 bg-slate-900/20">
+      <button id="btn-tab-script" onclick="switchTab('script')" 
+        class="tab-btn active px-4 py-2.5 text-sm font-medium rounded-t-xl transition-all duration-200 flex items-center gap-2 border-b-2 border-indigo-500 text-indigo-400 bg-slate-800/50">
+        <i data-lucide="code-2" class="w-4 h-4"></i>
+        Script
+      </button>
+      <button id="btn-tab-output" onclick="switchTab('output')" 
+        class="tab-btn px-4 py-2.5 text-sm font-medium rounded-t-xl transition-all duration-200 flex items-center gap-2 border-b-2 border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/30">
+        <i data-lucide="square-terminal" class="w-4 h-4"></i>
+        Output View
+      </button>
+    </div>
+
+    <div class="p-6">
+      
+      <div id="tab-script" class="space-y-4">
+        <div class="flex justify-between items-center">
+          <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Loader Code</span>
+          <button id="copy-btn" onclick="copyScript()" 
+            class="px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white text-xs font-semibold rounded-lg shadow-md shadow-indigo-500/20 transition-all duration-200 flex items-center gap-2 active:scale-95">
+            <i id="copy-icon" data-lucide="copy" class="w-4 h-4"></i>
+            <span id="copy-text">Copy Script</span>
+          </button>
+        </div>
+
+        <div class="relative group">
+          <pre class="p-4 bg-slate-900/90 rounded-xl border border-slate-800 text-indigo-300 font-mono text-sm overflow-x-auto selection:bg-indigo-500/30"><code id="script-code">loadstring(game:HttpGet("https://pastebin.com/raw/rdUuCBRr", true))()</code></pre>
+        </div>
+      </div>
+
+      <div id="tab-output" class="hidden space-y-4">
+        <div class="flex justify-between items-center">
+          <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Output Console</span>
+          <button onclick="clearOutput()" class="text-xs text-slate-400 hover:text-slate-200 flex items-center gap-1 transition-colors">
+            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+            Clear
+          </button>
+        </div>
+
+        <div id="output-box" class="p-4 bg-slate-950 rounded-xl border border-slate-800/80 font-mono text-xs space-y-2 h-36 overflow-y-auto">
+          <div class="text-slate-500">[System] Initializing GL Studios console...</div>
+          <div class="text-emerald-400">[Success] Script loaded successfully.</div>
+          <div class="text-indigo-400">[Info] Awaiting user action...</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="px-6 py-4 bg-slate-900/60 border-t border-slate-800/80 flex justify-between items-center text-xs text-slate-400">
+      <div class="flex items-center gap-1.5">
+        <i data-lucide="sparkles" class="w-4 h-4 text-purple-400"></i>
+        <span>Developed for the community</span>
+      </div>
+      <div class="font-medium text-slate-300">
+        &copy; <span class="text-indigo-400">GL Studios</span>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // Script actualizado
+    const scriptCodeText = 'loadstring(game:HttpGet("https://pastebin.com/raw/rdUuCBRr", true))()';
+
+    // Function to switch tabs
+    function switchTab(tab) {
+      const scriptTab = document.getElementById('tab-script');
+      const outputTab = document.getElementById('tab-output');
+      const btnScript = document.getElementById('btn-tab-script');
+      const btnOutput = document.getElementById('btn-tab-output');
+
+      if (tab === 'script') {
+        scriptTab.classList.remove('hidden');
+        outputTab.classList.add('hidden');
+
+        btnScript.className = "tab-btn active px-4 py-2.5 text-sm font-medium rounded-t-xl transition-all duration-200 flex items-center gap-2 border-b-2 border-indigo-500 text-indigo-400 bg-slate-800/50";
+        btnOutput.className = "tab-btn px-4 py-2.5 text-sm font-medium rounded-t-xl transition-all duration-200 flex items-center gap-2 border-b-2 border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/30";
+      } else {
+        scriptTab.classList.add('hidden');
+        outputTab.classList.remove('hidden');
+
+        btnOutput.className = "tab-btn active px-4 py-2.5 text-sm font-medium rounded-t-xl transition-all duration-200 flex items-center gap-2 border-b-2 border-indigo-500 text-indigo-400 bg-slate-800/50";
+        btnScript.className = "tab-btn px-4 py-2.5 text-sm font-medium rounded-t-xl transition-all duration-200 flex items-center gap-2 border-b-2 border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/30";
+      }
+    }
+
+    // Function to copy the script string to clipboard
+    function copyScript() {
+      navigator.clipboard.writeText(scriptCodeText).then(() => {
+        const btn = document.getElementById('copy-btn');
+        const text = document.getElementById('copy-text');
+        const icon = document.getElementById('copy-icon');
+        const outputBox = document.getElementById('output-box');
+
+        // Button feedback UI
+        btn.classList.remove('from-indigo-600', 'to-purple-600');
+        btn.classList.add('from-emerald-600', 'to-teal-600');
+        text.innerText = "Copied!";
+        icon.setAttribute('data-lucide', 'check');
+        lucide.createIcons();
+
+        // Output console log entry
+        const time = new Date().toLocaleTimeString();
+        const logEntry = document.createElement('div');
+        logEntry.className = "text-emerald-400";
+        logEntry.innerText = `[${time}] [GL Studios] Script copied to clipboard.`;
+        outputBox.appendChild(logEntry);
+        outputBox.scrollTop = outputBox.scrollHeight;
+
+        // Reset button after 2 seconds
+        setTimeout(() => {
+          btn.classList.remove('from-emerald-600', 'to-teal-600');
+          btn.classList.add('from-indigo-600', 'to-purple-600');
+          text.innerText = "Copy Script";
+          icon.setAttribute('data-lucide', 'copy');
+          lucide.createIcons();
+        }, 2000);
+      });
+    }
+
+    // Function to clear Output box
+    function clearOutput() {
+      const outputBox = document.getElementById('output-box');
+      outputBox.innerHTML = '<div class="text-slate-500">[System] Console cleared.</div>';
+    }
+  </script>
+</body>
+</html>
